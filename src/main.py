@@ -91,8 +91,16 @@ def download(session):
     logging.info(f'Архив был загружен и сохранён: {archive_path}')
 
 
-def pep():
-    pass
+def pep(session):
+    """Парсинг сайта pep."""
+    # pep_url = urljoin(MAIN_PEP_URL)
+    response = get_response(session, MAIN_PEP_URL)
+    if response is None:
+        return
+    soup = BeautifulSoup(response.text, features='lxml')
+    main_div = find_tag(soup,)
+    results = [('Статус', 'Количество')]
+    return results
 
 
 MODE_TO_FUNCTION = {
