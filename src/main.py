@@ -93,13 +93,13 @@ def download(session):
 
 def pep(session):
     """Парсинг сайта pep."""
-    # pep_url = urljoin(MAIN_PEP_URL)
     response = get_response(session, MAIN_PEP_URL)
     if response is None:
         return
     soup = BeautifulSoup(response.text, features='lxml')
-    main_div = find_tag(soup,)
+
     results = [('Статус', 'Количество')]
+
     return results
 
 
