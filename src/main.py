@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 from constants import (
     MAIN_DOC_URL, BASE_DIR, EXPECTED_STATUS, WHATS_NEW,
-    LATEST_VERSION, PARSER_DONE, PARSER_START, DOWNLOAD_DONE, PEP
+    LATEST_VERSION, PARSER_DONE, PARSER_START, ARCHIVE_DOWNLOAD, PEP
 )
 from configs import configure_argument_parser, configure_logging
 from outputs import control_output
@@ -56,7 +56,7 @@ def download(session):
         file.write(
             session.get(download_link(session, downloads_url)).content
         )
-    logging.info(f'{DOWNLOAD_DONE}{archive_path}')
+    logging.info(f'{ARCHIVE_DOWNLOAD}{archive_path}')
 
 
 def pep(session):
