@@ -2,6 +2,7 @@ import argparse
 from constants import BASE_DIR
 import logging
 from logging.handlers import RotatingFileHandler
+from constants import HELP_PARSER, PARSER_MODE, CLEAR_CACHE, ADD_DATA_OUTPUT
 
 LOG_FORMAT = '"%(asctime)s - [%(levelname)s] - %(message)s"'
 DT_FORMAT = '%d.%m.%Y %H:%M:%S'
@@ -9,23 +10,23 @@ DT_FORMAT = '%d.%m.%Y %H:%M:%S'
 
 def configure_argument_parser(available_modes):
     """Конфиг парсера c очисткой кеша."""
-    parser = argparse.ArgumentParser(description='Парсер документации Python')
+    parser = argparse.ArgumentParser(description=HELP_PARSER)
     parser.add_argument(
         'mode',
         choices=available_modes,
-        help='Режимы работы парсера'
+        help=PARSER_MODE
     )
     parser.add_argument(
         '-c',
         '--clear-cache',
         action='store_true',
-        help='Очистка кеша'
+        help=CLEAR_CACHE
     )
     parser.add_argument(
         '-o',
         '--output',
         choices=('pretty', 'file'),
-        help='Дополнительные способы вывода данных'
+        help=ADD_DATA_OUTPUT
     )
     return parser
 
