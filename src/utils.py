@@ -7,7 +7,7 @@ import re
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
-from constants import WRONG_TAG, NO_CONTENT
+from constants import WRONG_TAG, NO_CONTENT, MAIN_PEP_URL, EXPECTED_STATUS
 
 
 def get_response(session, url):

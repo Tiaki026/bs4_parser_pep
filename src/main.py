@@ -5,7 +5,7 @@ import requests_cache
 from tqdm import tqdm
 
 from constants import (
-    MAIN_DOC_URL, BASE_DIR, EXPECTED_STATUS, WHATS_NEW,
+    MAIN_DOC_URL, BASE_DIR, WHATS_NEW,
     LATEST_VERSION, PARSER_DONE, PARSER_START, ARCHIVE_DOWNLOAD, PEP
 )
 from configs import configure_argument_parser, configure_logging
