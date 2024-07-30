@@ -1,12 +1,13 @@
 import re
 from urllib.parse import urljoin
 
-import requests_cache
+from requests_cache import CachedSession
 from tqdm import tqdm
-
+from typing import Literal
 from constants import (
     MAIN_DOC_URL, BASE_DIR, WHATS_NEW,
-    LATEST_VERSION, PARSER_DONE, PARSER_START, ARCHIVE_DOWNLOAD, PEP
+    LATEST_VERSION, PARSER_DONE, PARSER_START,
+    ARCHIVE_DOWNLOAD, PEP, ARG_COMMAND_STR
 )
 from configs import configure_argument_parser, configure_logging
 from outputs import control_output
@@ -17,7 +18,11 @@ from utils import (
 import logging
 
 
-def whats_new(session):
+def whats_new(session: CachedSession) -> list[tuple[
+    Literal['Ссылка на статью'],
+    Literal['Заголовок'],
+    Literal['Редактор, автор']
+]]:
     """Нововведения python."""
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
     results = [WHATS_NEW]
@@ -30,7 +35,11 @@ def whats_new(session):
     return results
 
 
-def latest_versions(session):
+def latest_versions(session: CachedSession) -> list[tuple[
+    Literal['Ссылка на документацию'],
+    Literal['Версия'],
+    Literal['Статус']
+]]:
     """Статусы версий python."""
     results = [LATEST_VERSION]
     pattern = r'Python (?P<version>\d\.\d+) \((?P<status>.*)\)'
@@ -45,7 +54,7 @@ def latest_versions(session):
     return results
 
 
-def download(session):
+def download(session: CachedSession) -> None:
     """Скачивание файла."""
     downloads_url = urljoin(MAIN_DOC_URL, 'download.html')
     filename = download_link(session, downloads_url).split('/')[-1]
@@ -59,7 +68,9 @@ def download(session):
     logging.info(f'{ARCHIVE_DOWNLOAD}{archive_path}')
 
 
-def pep(session):
+def pep(session: CachedSession) -> list[tuple[
+    Literal['Статус'], Literal['Количество']
+]]:
     """Парсинг сайта pep."""
 
     results = [PEP]
@@ -80,9 +91,9 @@ def main():
     logging.info(PARSER_START)
     arg_parser = configure_argument_parser(MODE_TO_FUNCTION.keys())
     args = arg_parser.parse_args()
-    logging.info(f'Аргументы командной строки: {args}')
+    logging.info(f'{ARG_COMMAND_STR}{args}')
 
-    session = requests_cache.CachedSession()
+    session = CachedSession()
     if args.clear_cache:
         session.cache.clear()
 
