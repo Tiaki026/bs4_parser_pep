@@ -1,16 +1,17 @@
 import logging
 import re
-from typing import Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup, Tag
-from bs4.element import ResultSet
 from requests import RequestException, Response
 from requests_cache import CachedSession
 
-from constants import ERROR_DOWNLOAD_PAGE, NO_CONTENT, WRONG_TAG
+from constants import (
+    ERROR_DOWNLOAD_PAGE, EXPECTED_STATUS,
+    NO_CONTENT, PEP, UNEXPECTED_STATUS, WRONG_TAG
+)
 from exceptions import ParserFindTagException
-from tqdm import tqdm
 
 
 def get_response(session: CachedSession, url: str) -> (Response | Exception):
@@ -44,7 +45,7 @@ def get_soup(session: CachedSession, url: str) -> (BeautifulSoup | None):
     return BeautifulSoup(response.text, features='lxml')
 
 
-def parse_whats_new(session: CachedSession, url: str):
+def parse_whats_new(session: CachedSession, url: str) -> List[str]:
     """Парсинг новостей Python."""
     main_div = find_tag(
         get_soup(session, url),
@@ -67,9 +68,7 @@ def get_version_details(
     return url, h1, dl_text
 
 
-def parse_latest_versions(
-    session: CachedSession, url: str
-) -> (ResultSet | None):
+def parse_latest_versions(session: CachedSession, url: str) -> List[str]:
     """Парсинг статусов версий Python."""
     sidebar = find_tag(
         get_soup(session, url),
@@ -78,12 +77,15 @@ def parse_latest_versions(
     ul_tags = sidebar.find_all('ul')
     for ul in ul_tags:
         if 'All versions' in ul.text:
-            return ul.find_all('a')
-        raise Exception(NO_CONTENT)
-    return [a_tag.text for a_tag in ul.find_all('a')]
+            a_tags = ul.find_all('a')
+            break
+    else:
+        raise ParserFindTagException(NO_CONTENT)
+    return [a_tag for a_tag in a_tags]
 
 
 def download_link(session: CachedSession, url: str) -> str:
+    """Получение ссылки для скачивания."""
     table_tag = find_tag(
         get_soup(session, url),
         'table', attrs={'class': 'docutils'}
@@ -92,12 +94,51 @@ def download_link(session: CachedSession, url: str) -> str:
     return urljoin(url, pdf_a4_tag['href'])
 
 
-def parse_pep(session: CachedSession, url: str):
+def parse_pep_list(session: CachedSession, url: str) -> List[str]:
+    """Парсинг peps."""
     tag = find_tag(
         get_soup(session, url),
-        'section', {'id': 'numerical-index'}
+        'section',
+        {'id': 'numerical-index'}
     )
     peps = find_tag(tag, 'tbody').find_all('tr')
     if not peps:
         raise ParserFindTagException(NO_CONTENT)
-    return [pep for pep in tqdm(peps)]
+
+    return [pep for pep in peps]
+
+
+def process_pep(
+    session: CachedSession, pep,
+    url: str, count: Dict[str, int],
+    logs: List[str]
+) -> None:
+    """Процесс парсинга pep."""
+    status = find_tag(pep, 'abbr').text[1:]
+    expected = EXPECTED_STATUS.get(status, [])
+
+    link = urljoin(url, find_tag(pep, 'a')['href'] + '/')
+    status = find_tag(get_soup(session, link), 'abbr').text
+
+    if status not in expected:
+        logs.append(
+            UNEXPECTED_STATUS.format(
+                link=link,
+                status=status,
+                expected=expected
+            )
+        )
+    count[status] += 1
+
+
+def calculate_results(
+    count: Dict[str, int], logs: List[str]
+) -> List[Tuple[str, int]]:
+    """Сложение результата pep."""
+    results = [PEP]
+
+    list(map(logging.warning, logs))
+    count['Total'] = sum(count.values())
+    results += list(count.items())
+
+    return results

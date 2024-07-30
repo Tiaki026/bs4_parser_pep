@@ -1,5 +1,6 @@
 import logging
 import re
+from collections import defaultdict
 from typing import List, Tuple
 from urllib.parse import urljoin
 
@@ -9,12 +10,14 @@ from tqdm import tqdm
 from configs import configure_argument_parser, configure_logging
 from constants import (
     ARCHIVE_DOWNLOAD, ARG_COMMAND_STR, BASE_DIR,
-    LATEST_VERSION, MAIN_DOC_URL, PARSER_DONE, PARSER_START,
-    PEP, WHATS_NEW
+    LATEST_VERSION, MAIN_DOC_URL, MAIN_PEP_URL,
+    PARSER_DONE, PARSER_START, WHATS_NEW
 )
 from outputs import control_output
 from utils import (
-    download_link, get_version_details, parse_latest_versions, parse_whats_new
+    calculate_results, download_link,
+    get_version_details, parse_latest_versions,
+    parse_pep_list, parse_whats_new, process_pep
 )
 
 
@@ -34,8 +37,7 @@ def latest_versions(session: CachedSession) -> List[Tuple[str, str, str]]:
     results = [LATEST_VERSION]
     pattern = r'Python (?P<version>\d\.\d+) \((?P<status>.*)\)'
     for a_tag in parse_latest_versions(session, MAIN_DOC_URL):
-        text = a_tag.text
-        text_match = re.search(pattern, text)
+        text_match = re.search(pattern, a_tag.text)
         link = a_tag['href']
         if text_match:
             version = text_match.group('version')
@@ -60,10 +62,13 @@ def download(session: CachedSession) -> None:
 
 def pep(session: CachedSession) -> List[Tuple[str, int]]:
     """Парсинг сайта pep."""
+    count = defaultdict(int)
+    logs = []
 
-    results = [PEP]
+    for pep in tqdm(parse_pep_list(session, MAIN_PEP_URL)):
+        process_pep(session, pep, MAIN_PEP_URL, count, logs)
 
-    return results
+    return calculate_results(count, logs)
 
 
 MODE_TO_FUNCTION = {

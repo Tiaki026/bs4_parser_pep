@@ -7,14 +7,20 @@ MAIN_PEP_URL = 'https://peps.python.org/'
 
 EXPECTED_STATUS = {
     'A': ('Active', 'Accepted'),
-    'D': ('Deferred',),
-    'F': ('Final',),
-    'P': ('Provisional',),
-    'R': ('Rejected',),
-    'S': ('Superseded',),
-    'W': ('Withdrawn',),
+    'D': ('Deferred'),
+    'F': ('Final'),
+    'P': ('Provisional'),
+    'R': ('Rejected'),
+    'S': ('Superseded'),
+    'W': ('Withdrawn'),
     '': ('Draft', 'Active'),
 }
+UNEXPECTED_STATUS = (
+    '\n ❗️Статус не совпадает❗️:  {link}'
+    '\n \n      Полученный статус: {status}'
+    '\n      Ожидаемый статус: {expected}'
+    '\n'
+)
 
 WHATS_NEW = ('Ссылка на статью', 'Заголовок', 'Редактор, автор')
 LATEST_VERSION = ('Ссылка на документацию', 'Версия', 'Статус')
