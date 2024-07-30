@@ -1,21 +1,21 @@
+import logging
 import re
+from typing import List, Tuple
 from urllib.parse import urljoin
 
 from requests_cache import CachedSession
 from tqdm import tqdm
-from typing import Tuple, List
-from constants import (
-    MAIN_DOC_URL, BASE_DIR, WHATS_NEW,
-    LATEST_VERSION, PARSER_DONE, PARSER_START,
-    ARCHIVE_DOWNLOAD, PEP, ARG_COMMAND_STR
-)
+
 from configs import configure_argument_parser, configure_logging
+from constants import (
+    ARCHIVE_DOWNLOAD, ARG_COMMAND_STR, BASE_DIR,
+    LATEST_VERSION, MAIN_DOC_URL, PARSER_DONE, PARSER_START,
+    PEP, WHATS_NEW
+)
 from outputs import control_output
 from utils import (
-    parse_whats_new, get_version_details,
-    parse_latest_versions, download_link
+    download_link, get_version_details, parse_latest_versions, parse_whats_new
 )
-import logging
 
 
 def whats_new(session: CachedSession) -> List[Tuple[str, str, str]]:
@@ -23,9 +23,7 @@ def whats_new(session: CachedSession) -> List[Tuple[str, str, str]]:
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
     results = [WHATS_NEW]
     for section in tqdm(parse_whats_new(session, whats_new_url)):
-        version_a_tag = section.find('a')
-        version_link = urljoin(whats_new_url, version_a_tag['href'])
-        details = get_version_details(session, version_link)
+        details = get_version_details(session, urljoin(whats_new_url, section))
         if details:
             results.append(details)
     return results

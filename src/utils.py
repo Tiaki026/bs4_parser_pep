@@ -1,19 +1,16 @@
 import logging
-from requests import RequestException
-from typing import Tuple, Optional
-from requests import Response
-from bs4.element import ResultSet
-from exceptions import ParserFindTagException
-from bs4 import BeautifulSoup, Tag
 import re
+from typing import Optional, Tuple
 from urllib.parse import urljoin
+
+from bs4 import BeautifulSoup, Tag
+from bs4.element import ResultSet
+from requests import RequestException, Response
 from requests_cache import CachedSession
 
-from bs4 import BeautifulSoup
-from constants import (
-    WRONG_TAG, NO_CONTENT, MAIN_PEP_URL,
-    EXPECTED_STATUS, ERROR_DOWNLOAD_PAGE
-)
+from constants import ERROR_DOWNLOAD_PAGE, NO_CONTENT, WRONG_TAG
+from exceptions import ParserFindTagException
+from tqdm import tqdm
 
 
 def get_response(session: CachedSession, url: str) -> (Response | Exception):
@@ -47,16 +44,17 @@ def get_soup(session: CachedSession, url: str) -> (BeautifulSoup | None):
     return BeautifulSoup(response.text, features='lxml')
 
 
-def parse_whats_new(session: CachedSession, url: str) -> ResultSet:
+def parse_whats_new(session: CachedSession, url: str):
     """Парсинг новостей Python."""
     main_div = find_tag(
         get_soup(session, url),
         'section', attrs={'id': 'what-s-new-in-python'}
     )
     div_with_ul = find_tag(main_div, 'div', attrs={'class': 'toctree-wrapper'})
-    return div_with_ul.find_all(
+    section_by_python = div_with_ul.find_all(
         'li', attrs={'class': 'toctree-l1'}
     )
+    return [section.find('a')['href'] for section in section_by_python]
 
 
 def get_version_details(
@@ -81,7 +79,8 @@ def parse_latest_versions(
     for ul in ul_tags:
         if 'All versions' in ul.text:
             return ul.find_all('a')
-    raise Exception(NO_CONTENT)
+        raise Exception(NO_CONTENT)
+    return [a_tag.text for a_tag in ul.find_all('a')]
 
 
 def download_link(session: CachedSession, url: str) -> str:
@@ -91,3 +90,14 @@ def download_link(session: CachedSession, url: str) -> str:
     )
     pdf_a4_tag = table_tag.find('a', {'href': re.compile(r'.+pdf-a4\.zip$')})
     return urljoin(url, pdf_a4_tag['href'])
+
+
+def parse_pep(session: CachedSession, url: str):
+    tag = find_tag(
+        get_soup(session, url),
+        'section', {'id': 'numerical-index'}
+    )
+    peps = find_tag(tag, 'tbody').find_all('tr')
+    if not peps:
+        raise ParserFindTagException(NO_CONTENT)
+    return [pep for pep in tqdm(peps)]

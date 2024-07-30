@@ -1,8 +1,10 @@
-from prettytable import PrettyTable
-from constants import BASE_DIR, DATETIME_FORMAT, FILE_DOWNLOAD
-import datetime as dt
 import csv
+import datetime as dt
 import logging
+
+from prettytable import PrettyTable
+
+from constants import BASE_DIR, DATETIME_FORMAT, FILE_DOWNLOAD
 
 
 def file_output(results, cli_args):
