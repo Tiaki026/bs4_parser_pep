@@ -1,6 +1,6 @@
 import logging
 from requests import RequestException
-from typing import Any
+from typing import Tuple, Optional
 from requests import Response
 from bs4.element import ResultSet
 from exceptions import ParserFindTagException
@@ -10,10 +10,13 @@ from urllib.parse import urljoin
 from requests_cache import CachedSession
 
 from bs4 import BeautifulSoup
-from constants import WRONG_TAG, NO_CONTENT, MAIN_PEP_URL, EXPECTED_STATUS
+from constants import (
+    WRONG_TAG, NO_CONTENT, MAIN_PEP_URL,
+    EXPECTED_STATUS, ERROR_DOWNLOAD_PAGE
+)
 
 
-def get_response(session: CachedSession, url: str) -> (Response | None):
+def get_response(session: CachedSession, url: str) -> (Response | Exception):
     """Перехват ошибки RequestException."""
     try:
         response = session.get(url)
@@ -21,7 +24,7 @@ def get_response(session: CachedSession, url: str) -> (Response | None):
         return response
     except RequestException:
         logging.exception(
-            f'Возникла ошибка при загрузке страницы {url}',
+            f'{ERROR_DOWNLOAD_PAGE}{url}',
             stack_info=True
         )
 
@@ -56,7 +59,9 @@ def parse_whats_new(session: CachedSession, url: str) -> ResultSet:
     )
 
 
-def get_version_details(session: CachedSession, url: str) -> tuple:
+def get_version_details(
+    session: CachedSession, url: str
+) -> Optional[Tuple[str, str, str]]:
     """Получение деталей версии."""
     h1 = (find_tag(get_soup(session, url), 'h1')).text
     dl = (find_tag(get_soup(session, url), 'dl')).text
@@ -64,7 +69,9 @@ def get_version_details(session: CachedSession, url: str) -> tuple:
     return url, h1, dl_text
 
 
-def parse_latest_versions(session: CachedSession, url: str) -> Any:
+def parse_latest_versions(
+    session: CachedSession, url: str
+) -> (ResultSet | None):
     """Парсинг статусов версий Python."""
     sidebar = find_tag(
         get_soup(session, url),

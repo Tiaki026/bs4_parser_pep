@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 
 from requests_cache import CachedSession
 from tqdm import tqdm
-from typing import Literal
+from typing import Tuple, List
 from constants import (
     MAIN_DOC_URL, BASE_DIR, WHATS_NEW,
     LATEST_VERSION, PARSER_DONE, PARSER_START,
@@ -18,11 +18,7 @@ from utils import (
 import logging
 
 
-def whats_new(session: CachedSession) -> list[tuple[
-    Literal['Ссылка на статью'],
-    Literal['Заголовок'],
-    Literal['Редактор, автор']
-]]:
+def whats_new(session: CachedSession) -> List[Tuple[str, str, str]]:
     """Нововведения python."""
     whats_new_url = urljoin(MAIN_DOC_URL, 'whatsnew/')
     results = [WHATS_NEW]
@@ -35,11 +31,7 @@ def whats_new(session: CachedSession) -> list[tuple[
     return results
 
 
-def latest_versions(session: CachedSession) -> list[tuple[
-    Literal['Ссылка на документацию'],
-    Literal['Версия'],
-    Literal['Статус']
-]]:
+def latest_versions(session: CachedSession) -> List[Tuple[str, str, str]]:
     """Статусы версий python."""
     results = [LATEST_VERSION]
     pattern = r'Python (?P<version>\d\.\d+) \((?P<status>.*)\)'
@@ -68,9 +60,7 @@ def download(session: CachedSession) -> None:
     logging.info(f'{ARCHIVE_DOWNLOAD}{archive_path}')
 
 
-def pep(session: CachedSession) -> list[tuple[
-    Literal['Статус'], Literal['Количество']
-]]:
+def pep(session: CachedSession) -> List[Tuple[str, int]]:
     """Парсинг сайта pep."""
 
     results = [PEP]
@@ -86,7 +76,7 @@ MODE_TO_FUNCTION = {
 }
 
 
-def main():
+def main() -> None:
     configure_logging()
     logging.info(PARSER_START)
     arg_parser = configure_argument_parser(MODE_TO_FUNCTION.keys())
