@@ -134,4 +134,4 @@ $ python src/main.py download
 ## 
 
 
-  ## [:top: Путь наверх :top:]([https://github.com/Tiaki026/foodgram-project-react/blob/master/README.md#оглавление](https://github.com/Tiaki026/bs4_parser_pep?tab=readme-ov-file#pep-parser)
+  ## [:top: Путь наверх :top:](https://github.com/Tiaki026/bs4_parser_pep?tab=readme-ov-file#pep-parser)
