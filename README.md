@@ -88,10 +88,14 @@ options:
                         Дополнительные способы вывода данных
 ```
 - Вызов whats-new,latest-versions,download,pep c доступными опциями.
+
   -с или --clear-cache очищает кеш и заставляет парсить сайт вновь
   :warning: Предупреждение :warning:: парсинг pep без кеша занимает время около 5 минут.
+
   -o или --output вызываются с дополнительными методами pretty или file
+  
   pretty выведет в терминал таблицу
+  
   file скачает все в файл [src\result\ваш_файл.csv](https://github.com/Tiaki026/bs4_parser_pep/tree/master/src/results)
 ```
 $ python src/main.py -o pretty latest-versions
