@@ -167,6 +167,7 @@ $ python src/main.py -o file latest-versions
 - download скачивает в папку src\downloads архив со всей документацией
 ```
 $ python src/main.py download
+
 "31.07.2024 15:01:44 - [INFO] - Парсер запущен!"
 "31.07.2024 15:01:44 - [INFO] - Аргументы командной строки: Namespace(mode='download', clear_cache=False, output=None)"
 "31.07.2024 15:01:44 - [INFO] -  Архив был загружен и сохранён: E:\Dev\bs4_parser_pep\src\downloads\python-3.12.4-docs-pdf-a4.zip"
