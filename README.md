@@ -1,7 +1,15 @@
 # PEP Parser
 
 # Оглавление
-- 
+- [:page_with_curl: Описание](https://github.com/Tiaki026/bs4_parser_pep#page_with_curl-описание)
+- [Процесс разработки, особенности и трудности](https://github.com/Tiaki026/bs4_parser_pep#процесс-разработки-особенности-и-трудности)
+  - [Было изучено](https://github.com/Tiaki026/bs4_parser_pep#было-изучено)
+  - [Трудности возникшие в работе](https://github.com/Tiaki026/bs4_parser_pep#трудности-возникшие-в-работе)
+- [:computer: Стек технологий](https://github.com/Tiaki026/bs4_parser_pep#computer-стек-технологий)
+- [:page_with_curl: Как воспользоваться проектом](https://github.com/Tiaki026/bs4_parser_pep#page_with_curl-как-воспользоваться-проектом)
+  - [Подготовка проекта](https://github.com/Tiaki026/bs4_parser_pep#подготовка-проекта)
+  - [Работа с проектом](https://github.com/Tiaki026/bs4_parser_pep#работа-с-проектом)
+- [Автор](https://github.com/Tiaki026/bs4_parser_pep#автор)
 
 ## :page_with_curl: Описание
 PEP Parser — это инструмент для парсинга PEP (Python Enhancement Proposals) с [официального сайта](https://peps.python.org/) и версий python c [официального сайта](https://docs.python.org/3/). Скрипт позволяет анализировать статусы PEP и выводить результаты в виде количества каждого статуса, собирать версии python и выводить результат с номером версии, статуса и ее авторов.
@@ -59,7 +67,7 @@ source venv/Scripts/activate
 ```
 pip install -r requirements.txt
 ```
-### Пользование проектом
+### Работа с проектом
 - Вызов справки
 ```
 $ python src/main.py -h
