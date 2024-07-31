@@ -8,7 +8,7 @@
 - [:computer: Стек технологий](https://github.com/Tiaki026/bs4_parser_pep#computer-стек-технологий)
 - [:page_with_curl: Как воспользоваться проектом](https://github.com/Tiaki026/bs4_parser_pep#page_with_curl-как-воспользоваться-проектом)
   - [Подготовка проекта](https://github.com/Tiaki026/bs4_parser_pep#подготовка-проекта)
-  - [Работа с проектом](https://github.com/Tiaki026/bs4_parser_pep#работа-с-проектом)
+  - [Работа с проектом](https://github.com/Tiaki026/bs4_parser_pep?tab=readme-ov-file#работа-с-проектом)
 - [Автор](https://github.com/Tiaki026/bs4_parser_pep#автор)
 
 ## :page_with_curl: Описание
