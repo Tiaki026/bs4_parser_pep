@@ -72,7 +72,7 @@ pip install -r requirements.txt
 ```
 $ python src/main.py -h
 
-"31.07.2024 14:46:21 - [INFO] - ▶ Парсер запущен!"
+"31.07.2024 14:46:21 - [INFO] - Парсер запущен!"
 usage: main.py [-h] [-c] [-o {pretty,file}] {whats-new,latest-versions,download,pep}
 
 Парсер документации Python
@@ -95,7 +95,7 @@ options:
 ```
 $ python src/main.py -o pretty -c pep
 
-"31.07.2024 15:31:06 - [INFO] - ▶ Парсер запущен!"
+"31.07.2024 15:31:06 - [INFO] - Парсер запущен!"
 "31.07.2024 15:31:06 - [INFO] - Аргументы командной строки: Namespace(mode='pep', clear_cache=True, output='pretty')"
 "31.07.2024 15:31:06 - [INFO] - Clearing all items from the cache"
 100%|███████████████████████████████████████████████████████████████████████████████████████████████████| 649/649 [04:05<00:00,  2.64it/s]
@@ -131,7 +131,7 @@ $ python src/main.py -o pretty -c pep
 ```
 $ python src/main.py -o pretty latest-versions
 
-"31.07.2024 14:49:15 - [INFO] - ▶ Парсер запущен!"
+"31.07.2024 14:49:15 - [INFO] - Парсер запущен!"
 "31.07.2024 14:49:15 - [INFO] - Аргументы командной строки: Namespace(mode='latest-versions', clear_cache=False, output='pretty')"
 +-------------------------------+--------+----------------+
 | Ссылка на документацию        | Версия | Статус         |
@@ -159,7 +159,7 @@ $ python src/main.py -o pretty latest-versions
 ```
 $ python src/main.py -o file latest-versions
 
-"31.07.2024 14:56:22 - [INFO] - ▶ Парсер запущен!"
+"31.07.2024 14:56:22 - [INFO] - Парсер запущен!"
 "31.07.2024 14:56:22 - [INFO] - Аргументы командной строки: Namespace(mode='latest-versions', clear_cache=False, output='file')"
 "31.07.2024 14:56:22 - [INFO] -  Файл с результатами был сохранён: E:\Dev\bs4_parser_pep\src\results\latest-versions_2024-07-31_14-56-22.csv"
 "31.07.2024 14:56:22 - [INFO] -  Парсер завершил работу."
@@ -167,7 +167,7 @@ $ python src/main.py -o file latest-versions
 - download скачивает в папку src\downloads архив со всей документацией
 ```
 $ python src/main.py download
-"31.07.2024 15:01:44 - [INFO] - ▶ Парсер запущен!"
+"31.07.2024 15:01:44 - [INFO] - Парсер запущен!"
 "31.07.2024 15:01:44 - [INFO] - Аргументы командной строки: Namespace(mode='download', clear_cache=False, output=None)"
 "31.07.2024 15:01:44 - [INFO] -  Архив был загружен и сохранён: E:\Dev\bs4_parser_pep\src\downloads\python-3.12.4-docs-pdf-a4.zip"
 "31.07.2024 15:01:44 - [INFO] -  Парсер завершил работу."
