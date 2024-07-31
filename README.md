@@ -90,6 +90,7 @@ options:
 - Вызов whats-new,latest-versions,download,pep c доступными опциями.
 
   -с или --clear-cache очищает кеш и заставляет парсить сайт вновь
+  
   :warning: Предупреждение :warning:: парсинг pep без кеша занимает время около 5 минут.
 
   -o или --output вызываются с дополнительными методами pretty или file
