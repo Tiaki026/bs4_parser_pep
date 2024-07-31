@@ -16,15 +16,11 @@ PEP Parser — это инструмент для парсинга PEP (Python E
 Оптимизация производительности - парсинг большого количества данных может занимать много времени.
 
 ## :computer: Стек технологий
-- ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
-
-  Python: Язык программирования
-- ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-
-  HTML: Стандартизированный язык гипертекстовой разметки документов для просмотра веб-страниц в браузере
-- :stew: BeautifulSoup4: библиотека для парсинга HTML и XML документов в Python
+- ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) Python: Язык программирования
+- ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) HTML: Стандартизированный язык гипертекстовой разметки документов для просмотра веб-страниц в браузере
+- ![BS4](https://camo.githubusercontent.com/8a2aab0d5a7f5ce7d12bbb8f908e7786bcad6c7dd255bdc6aa5fe667f61ae625/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d42656175746966756c536f7570342d3436343634363f7374796c653d666c6174266c6f676f3d42656175746966756c536f757034266c6f676f436f6c6f723d66666666666626636f6c6f723d303433413642) BeautifulSoup4: библиотека для парсинга HTML и XML документов в Python
 - :bar_chart: tqdm: библиотека отображения прогресс-бара
-- :chart_with_upwards_trend: PrettyTable:  библиотека вывода данных в таблицу
+- ![PT](https://camo.githubusercontent.com/fd87112e437d5861ab358398eefda2c12a17dd29154d0a4ec888e4da4cc31ffa/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d5072657474797461626c652d3436343634363f7374796c653d666c6174266c6f676f3d5072657474797461626c65266c6f676f436f6c6f723d66666666666626636f6c6f723d303433413642) PrettyTable:  библиотека вывода данных в таблицу
 - :floppy_disk: requests_cache: Библиотека кеширования сессии
 
   
