@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup, Tag
@@ -14,7 +14,9 @@ from constants import (
 from exceptions import ParserFindTagException
 
 
-def get_response(session: CachedSession, url: str) -> (Response | Exception):
+def get_response(
+    session: CachedSession, url: str
+) -> Union[Response, Exception]:
     """Перехват ошибки RequestException."""
     try:
         response = session.get(url)
@@ -27,7 +29,9 @@ def get_response(session: CachedSession, url: str) -> (Response | Exception):
         )
 
 
-def find_tag(soup: BeautifulSoup, tag: str, attrs=None) -> (Tag | Exception):
+def find_tag(
+    soup: BeautifulSoup, tag: str, attrs=None
+) -> Union[Tag, Exception]:
     """Перехват ошибки поиска тегов."""
     searched_tag = soup.find(tag, attrs=(attrs or {}))
     if searched_tag is None:
@@ -37,7 +41,7 @@ def find_tag(soup: BeautifulSoup, tag: str, attrs=None) -> (Tag | Exception):
     return searched_tag
 
 
-def get_soup(session: CachedSession, url: str) -> (BeautifulSoup | None):
+def get_soup(session: CachedSession, url: str) -> Union[BeautifulSoup, None]:
     """Получение супа."""
     response = get_response(session, url)
     if response is None:
