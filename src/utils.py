@@ -85,7 +85,7 @@ def parse_latest_versions(session: CachedSession, url: str) -> List[str]:
             break
     else:
         raise ParserFindTagException(NO_CONTENT)
-    return [a_tag for a_tag in a_tags]
+    return a_tags
 
 
 def download_link(session: CachedSession, url: str) -> str:
@@ -109,11 +109,11 @@ def parse_pep_list(session: CachedSession, url: str) -> List[str]:
     if not peps:
         raise ParserFindTagException(NO_CONTENT)
 
-    return [pep for pep in peps]
+    return peps
 
 
 def process_pep(
-    session: CachedSession, pep,
+    session: CachedSession, pep: str,
     url: str, count: Dict[str, int],
     logs: List[str]
 ) -> None:
@@ -135,13 +135,10 @@ def process_pep(
     count[status] += 1
 
 
-def calculate_results(
-    count: Dict[str, int], logs: List[str]
-) -> List[Tuple[str, int]]:
+def calculate_results(count: Dict[str, int]) -> List[Tuple[str, int]]:
     """Сложение результата pep."""
     results = [PEP]
 
-    list(map(logging.warning, logs))
     count['Total'] = sum(count.values())
     results += list(count.items())
 

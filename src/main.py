@@ -68,7 +68,7 @@ def pep(session: CachedSession) -> List[Tuple[str, int]]:
     for pep in tqdm(parse_pep_list(session, MAIN_PEP_URL)):
         process_pep(session, pep, MAIN_PEP_URL, count, logs)
 
-    return calculate_results(count, logs)
+    return calculate_results(count)
 
 
 MODE_TO_FUNCTION = {
