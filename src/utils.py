@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Dict, List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup, Tag
@@ -9,7 +9,7 @@ from requests_cache import CachedSession
 
 from constants import (
     ERROR_DOWNLOAD_PAGE, EXPECTED_STATUS,
-    NO_CONTENT, PEP, UNEXPECTED_STATUS, WRONG_TAG
+    NO_CONTENT, UNEXPECTED_STATUS, WRONG_TAG
 )
 from exceptions import ParserFindTagException
 
@@ -98,7 +98,7 @@ def download_link(session: CachedSession, url: str) -> str:
     return urljoin(url, pdf_a4_tag['href'])
 
 
-def parse_pep_list(session: CachedSession, url: str) -> List[str]:
+def parse_pep_list(session: CachedSession, url: str) -> List[Tag]:
     """Парсинг peps."""
     tag = find_tag(
         get_soup(session, url),
@@ -113,10 +113,8 @@ def parse_pep_list(session: CachedSession, url: str) -> List[str]:
 
 
 def process_pep(
-    session: CachedSession, pep: str,
-    url: str, count: Dict[str, int],
-    logs: List[str]
-) -> None:
+    session: CachedSession, pep: Tag, url: str
+) -> Union[Tuple[str, str], str]:
     """Процесс парсинга pep."""
     status = find_tag(pep, 'abbr').text[1:]
     expected = EXPECTED_STATUS.get(status, [])
@@ -125,21 +123,10 @@ def process_pep(
     status = find_tag(get_soup(session, link), 'abbr').text
 
     if status not in expected:
-        logs.append(
-            UNEXPECTED_STATUS.format(
-                link=link,
-                status=status,
-                expected=expected
-            )
+        log_msg = UNEXPECTED_STATUS.format(
+            link=link,
+            status=status,
+            expected=expected
         )
-    count[status] += 1
-
-
-def calculate_results(count: Dict[str, int]) -> List[Tuple[str, int]]:
-    """Сложение результата pep."""
-    results = [PEP]
-
-    count['Total'] = sum(count.values())
-    results += list(count.items())
-
-    return results
+        return status, log_msg
+    return status

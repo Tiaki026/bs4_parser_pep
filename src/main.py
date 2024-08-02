@@ -11,11 +11,11 @@ from configs import configure_argument_parser, configure_logging
 from constants import (
     ARCHIVE_DOWNLOAD, ARG_COMMAND_STR, BASE_DIR,
     LATEST_VERSION, MAIN_DOC_URL, MAIN_PEP_URL,
-    PARSER_DONE, PARSER_START, WHATS_NEW
+    PARSER_DONE, PARSER_START, WHATS_NEW, PEP
 )
 from outputs import control_output
 from utils import (
-    calculate_results, download_link,
+    download_link,
     get_version_details, parse_latest_versions,
     parse_pep_list, parse_whats_new, process_pep
 )
@@ -64,11 +64,21 @@ def pep(session: CachedSession) -> List[Tuple[str, int]]:
     """Парсинг сайта pep."""
     count = defaultdict(int)
     logs = []
+    results = [PEP]
 
     for pep in tqdm(parse_pep_list(session, MAIN_PEP_URL)):
-        process_pep(session, pep, MAIN_PEP_URL, count, logs)
+        details = process_pep(session, pep, MAIN_PEP_URL)
+        if isinstance(details, tuple):
+            status, log_msg = details
+            logs.append(log_msg)
+        else:
+            status = details
+        count[status] += 1
 
-    return calculate_results(count)
+    count['Total'] = sum(count.values())
+    results += list(count.items())
+
+    return results
 
 
 MODE_TO_FUNCTION = {
