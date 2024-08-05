@@ -67,12 +67,11 @@ def pep(session: CachedSession) -> List[Tuple[str, int]]:
     results = [PEP]
 
     for pep in tqdm(parse_pep_list(session, MAIN_PEP_URL)):
-        details = process_pep(session, pep, MAIN_PEP_URL)
-        if isinstance(details, tuple):
-            status, log_msg = details
+        status, log_msg = process_pep(session, pep, MAIN_PEP_URL)
+
+        if log_msg:
             logs.append(log_msg)
-        else:
-            status = details
+
         count[status] += 1
 
     count['Total'] = sum(count.values())

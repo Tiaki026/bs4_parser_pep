@@ -22,11 +22,12 @@ def get_response(
         response = session.get(url)
         response.encoding = 'utf-8'
         return response
-    except RequestException:
+    except RequestException as err:
         logging.exception(
             f'{ERROR_DOWNLOAD_PAGE}{url}',
             stack_info=True
         )
+        raise err
 
 
 def find_tag(
@@ -122,11 +123,12 @@ def process_pep(
     link = urljoin(url, find_tag(pep, 'a')['href'] + '/')
     status = find_tag(get_soup(session, link), 'abbr').text
 
+    log_msg = ''
     if status not in expected:
         log_msg = UNEXPECTED_STATUS.format(
             link=link,
             status=status,
             expected=expected
         )
-        return status, log_msg
-    return status
+
+    return status, log_msg
